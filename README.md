@@ -4,16 +4,16 @@ Agente de desenvolvimento local para Windows, com Claude Code, inferência por l
 
 ## Tecnologias
 
-![Claude Code](https://img.shields.io/badge/Claude%20Code-agente-D97757?logo=claude&logoColor=white)
-![llama.cpp](https://img.shields.io/badge/llama.cpp-infer%C3%AAncia%20local-4A5568)
-![Mellum](https://img.shields.io/badge/Mellum-12B%20MoE-7B61FF)
-![Apex](https://img.shields.io/badge/Apex-35B%20MoE-6741D9)
-![Python](https://img.shields.io/badge/Python-agente%20e%20instalador-3776AB?logo=python&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)
-![WSL 2](https://img.shields.io/badge/Windows-WSL%202-0078D4)
-![NVIDIA CUDA](https://img.shields.io/badge/NVIDIA-CUDA-76B900?logo=nvidia&logoColor=white)
-![Prometheus](https://img.shields.io/badge/Prometheus-m%C3%A9tricas-E6522C?logo=prometheus&logoColor=white)
-![Grafana](https://img.shields.io/badge/Grafana-pain%C3%A9is-F46800?logo=grafana&logoColor=white)
+[![Claude Code](https://img.shields.io/badge/Claude%20Code-agente-D97757?logo=claude&logoColor=white)](https://code.claude.com/docs/)
+[![llama.cpp](https://img.shields.io/badge/llama.cpp-infer%C3%AAncia%20local-4A5568)](https://github.com/ggml-org/llama.cpp)
+[![Mellum](https://img.shields.io/badge/Mellum-12B%20MoE-7B61FF)](https://huggingface.co/JetBrains/Mellum2.1-12B-A2.5B-Thinking-GGUF)
+[![Apex](https://img.shields.io/badge/Apex-35B%20MoE-6741D9)](https://huggingface.co/Apexintelligence-AI/Apex-35B-V1.0-GGUF)
+[![Python](https://img.shields.io/badge/Python-agente%20e%20instalador-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)](https://docs.docker.com/compose/)
+[![WSL 2](https://img.shields.io/badge/Windows-WSL%202-0078D4)](https://learn.microsoft.com/windows/wsl/)
+[![NVIDIA CUDA](https://img.shields.io/badge/NVIDIA-CUDA-76B900?logo=nvidia&logoColor=white)](https://developer.nvidia.com/cuda-toolkit)
+[![Prometheus](https://img.shields.io/badge/Prometheus-m%C3%A9tricas-E6522C?logo=prometheus&logoColor=white)](https://prometheus.io/)
+[![Grafana](https://img.shields.io/badge/Grafana-pain%C3%A9is-F46800?logo=grafana&logoColor=white)](https://grafana.com/oss/grafana/)
 
 ## Instalação
 
