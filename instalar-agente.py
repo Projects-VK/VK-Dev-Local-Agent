@@ -99,16 +99,20 @@ def install(destination, data, models, prometheus=False, grafana=False):
         staged = Path(temporary) / "instalacao"
         staged.mkdir()
         for name in FILES:
-            shutil.copy2(SOURCE / name, staged / name)
+            source = next((SOURCE / group / name for group in ('agente', 'instalacao', 'inferencia', 'observabilidade') if (SOURCE / group / name).is_file()), None)
+            if source is None:
+                raise FileNotFoundError(name)
+            shutil.copy2(source, staged / name)
         if prometheus:
             for name in OBSERVABILITY:
-                shutil.copy2(SOURCE / name, staged / name)
+                group = "instalacao" if name == "instalar-observabilidade.py" else "observabilidade"
+                shutil.copy2(SOURCE / group / name, staged / name)
         if grafana:
-            shutil.copytree(SOURCE / "grafana", staged / "grafana")
+            shutil.copytree(SOURCE / "observabilidade" / "grafana", staged / "grafana")
         profiles = [profile for name in models for profile in MODELS[name][1]]
         (staged / "instalacao.json").write_text(json.dumps({"dados": str(data), "perfis": profiles}, indent=2) + "\n",
                                                 encoding="utf-8")
-        command = [sys.executable, "-B", str(SOURCE / "gerar-executavel.py"),
+        command = [sys.executable, "-B", str(SOURCE / "instalacao" / "gerar-executavel.py"),
                    str(staged), "--projeto", str(destination.parent)]
         if grafana:
             command.append("--grafana")

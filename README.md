@@ -11,3 +11,12 @@ O instalador baixa os modelos selecionados por padrão. A imagem de inferência 
 AgenteLocal.exe inicia o agente. Com Grafana selecionado, AgenteLocalGrafana.exe também abre o painel local. Os perfis fornecidos usam 32.768 tokens de contexto e meta de 768 MiB livres de VRAM no carregamento.
 
 Os pesos de modelos, credenciais, volumes e históricos permanecem fora do repositório. Componentes externos são obtidos separadamente e seguem suas próprias licenças. A licença dos arquivos próprios ainda não foi escolhida.
+
+## Organização
+
+- agente contém o lançador, o roteador e as instruções.
+- instalacao contém os componentes auxiliares do instalador.
+- inferencia contém os perfis Docker do servidor.
+- observabilidade contém os serviços e o painel de métricas.
+
+O instalador reúne os arquivos necessários na pasta escolhida para uso local.
