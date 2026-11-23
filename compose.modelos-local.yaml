@@ -1,0 +1,17 @@
+services:
+  llama-server:
+    volumes:
+      - type: bind
+        source: ${LLM_MODELOS_DIR:?Informe a pasta de modelos}
+        target: /models
+        read_only: true
+        bind:
+          create_host_path: false
+
+volumes:
+  modelos: !reset null
+
+networks:
+  default:
+    name: llm-local-moe_default
+    external: true

@@ -1,0 +1,61 @@
+name: llm-observabilidade
+
+services:
+  prometheus:
+    image: docker.io/prom/prometheus:v3.16.0@sha256:e04987641b57704f408e31f6373ba4138ecf27cb4a165d24aabb6c38fddd0f06
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - dados:/prometheus
+    networks:
+      - inferencia
+
+  hardware-exporter:
+    image: docker.io/prom/node-exporter@sha256:7296504d4ada44b7d7ab4431e27e9f9900d8488f8d55842f4b12ae2704e16dfe
+    restart: unless-stopped
+    command:
+      - --collector.disable-defaults
+      - --collector.textfile
+      - --collector.textfile.directory=/hardware
+    volumes:
+      - ./hardware:/hardware:ro
+    networks:
+      - inferencia
+
+  grafana:
+    image: docker.io/grafana/grafana@sha256:0615ec4fbd4072004b7d86b46ded63013a74b7d6eb1119273dd89e8fa25c13cf
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3000:3000"
+    environment:
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
+      GF_SECURITY_ADMIN_PASSWORD__FILE: /run/secrets/grafana_admin_password
+      GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH: /etc/grafana/dashboards/inferencia.json
+      GF_ANALYTICS_REPORTING_ENABLED: "false"
+      GF_ANALYTICS_CHECK_FOR_UPDATES: "false"
+    secrets:
+      - grafana_admin_password
+    volumes:
+      - grafana-dados:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/etc/grafana/dashboards:ro
+    networks:
+      - inferencia
+
+networks:
+  inferencia:
+    name: llm-local-moe_default
+    external: true
+
+volumes:
+  dados:
+    name: llm-prometheus-dados
+  grafana-dados:
+    name: llm-grafana-dados
+
+secrets:
+  grafana_admin_password:
+    file: ./grafana-admin-password

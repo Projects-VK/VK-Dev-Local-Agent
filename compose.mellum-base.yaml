@@ -1,0 +1,44 @@
+name: llm-local-moe
+
+services:
+  llama-server:
+    image: ghcr.io/ggml-org/llama.cpp@sha256:6b1c681b535a15d406c7270fd2730f5bd36d3598fbb0ca894bfa47857a700fe3
+    gpus: all
+    ports:
+      - "127.0.0.1:11435:8080"
+    environment:
+      LLAMA_ARG_CACHE_RAM: "0"
+      LLAMA_ARG_ENDPOINT_METRICS: "1"
+      LLAMA_ARG_SLOT_SAVE_PATH: /tmp/
+    volumes:
+      - type: volume
+        source: modelos
+        target: /models
+        read_only: true
+    command:
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8080"
+      - --model
+      - /models/Mellum2.1-12B-A2.5B-Thinking-Q4_K_M.gguf
+      - --alias
+      - mellum2.1-12b-a2.5b
+      - --ctx-size
+      - "32768"
+      - --cache-type-k
+      - q8_0
+      - --cache-type-v
+      - q8_0
+      - --parallel
+      - "1"
+      - --fit
+      - "on"
+      - --fit-target
+      - "768"
+      - --jinja
+
+volumes:
+  modelos:
+    name: llm-local-modelos
+    external: true

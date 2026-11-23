@@ -1,0 +1,449 @@
+{
+  "uid": "llm-inferencia",
+  "title": "Inferência local",
+  "schemaVersion": 39,
+  "editable": false,
+  "timezone": "browser",
+  "refresh": "15s",
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "panels": [
+    {
+      "id": 1,
+      "title": "Tokens gerados por segundo",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom-local"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 8,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "suffix: tok/s",
+          "min": 0
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prom-local"
+          },
+          "expr": "rate(llamacpp:tokens_predicted_total[2m])",
+          "legendFormat": "Tokens gerados por segundo"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Tokens de entrada por segundo",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom-local"
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 0,
+        "w": 8,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "suffix: tok/s",
+          "min": 0
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prom-local"
+          },
+          "expr": "rate(llamacpp:prompt_tokens_total[2m])",
+          "legendFormat": "Tokens de entrada por segundo"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Requisições ativas e em espera",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom-local"
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 0,
+        "w": 8,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "min": 0
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prom-local"
+          },
+          "expr": "llamacpp:requests_processing",
+          "legendFormat": "Em processamento"
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prom-local"
+          },
+          "expr": "llamacpp:requests_deferred",
+          "legendFormat": "Em espera"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Maior contexto observado pelo servidor",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom-local"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 8,
+        "w": 8,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "suffix: tokens",
+          "min": 0
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prom-local"
+          },
+          "expr": "llamacpp:n_tokens_max",
+          "legendFormat": "Maior contexto observado pelo servidor"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Tokens acumulados",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom-local"
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 8,
+        "w": 8,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "suffix: tokens",
+          "min": 0
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prom-local"
+          },
+          "expr": "llamacpp:prompt_tokens_total",
+          "legendFormat": "Entrada"
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prom-local"
+          },
+          "expr": "llamacpp:tokens_predicted_total",
+          "legendFormat": "Geração"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Disponibilidade da coleta",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom-local"
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 8,
+        "w": 8,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "min": 0
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prom-local"
+          },
+          "expr": "up{job=\"llama-server\"}",
+          "legendFormat": "llama-server"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "RAM do contêiner",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom-local"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 16,
+        "w": 8,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "bytes",
+          "min": 0
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "llm_container_ram_bytes and on(instance,job) (time() - llm_hardware_sample_timestamp_seconds < 45)",
+          "legendFormat": "Total",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prom-local"
+          }
+        },
+        {
+          "refId": "B",
+          "expr": "llm_container_ram_anon_bytes and on(instance,job) (time() - llm_hardware_sample_timestamp_seconds < 45)",
+          "legendFormat": "Anônima",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prom-local"
+          }
+        },
+        {
+          "refId": "C",
+          "expr": "llm_container_ram_file_bytes and on(instance,job) (time() - llm_hardware_sample_timestamp_seconds < 45)",
+          "legendFormat": "Cache de arquivos",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prom-local"
+          }
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "RAM do Ubuntu · WSL",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom-local"
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 16,
+        "w": 8,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "bytes",
+          "min": 0
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "llm_wsl_ram_total_bytes and on(instance,job) (time() - llm_hardware_sample_timestamp_seconds < 45)",
+          "legendFormat": "Total",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prom-local"
+          }
+        },
+        {
+          "refId": "B",
+          "expr": "llm_wsl_ram_available_bytes and on(instance,job) (time() - llm_hardware_sample_timestamp_seconds < 45)",
+          "legendFormat": "Disponível",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prom-local"
+          }
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "title": "VRAM da GPU NVIDIA",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom-local"
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 16,
+        "w": 8,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "bytes",
+          "min": 0
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "llm_gpu_vram_used_bytes and on(instance,job) (time() - llm_hardware_sample_timestamp_seconds < 45)",
+          "legendFormat": "Ocupada",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prom-local"
+          }
+        },
+        {
+          "refId": "B",
+          "expr": "llm_gpu_vram_free_bytes and on(instance,job) (time() - llm_hardware_sample_timestamp_seconds < 45)",
+          "legendFormat": "Livre",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prom-local"
+          }
+        },
+        {
+          "refId": "C",
+          "expr": "llm_gpu_vram_total_bytes and on(instance,job) (time() - llm_hardware_sample_timestamp_seconds < 45)",
+          "legendFormat": "Total",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prom-local"
+          }
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "Swap em uso",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom-local"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 24,
+        "w": 8,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "bytes",
+          "min": 0
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "llm_wsl_swap_used_bytes and on(instance,job) (time() - llm_hardware_sample_timestamp_seconds < 45)",
+          "legendFormat": "Ubuntu · WSL",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prom-local"
+          }
+        },
+        {
+          "refId": "B",
+          "expr": "llm_container_swap_used_bytes and on(instance,job) (time() - llm_hardware_sample_timestamp_seconds < 45)",
+          "legendFormat": "Contêiner",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prom-local"
+          }
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "title": "RAM dos processos Claude Code",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prom-local"
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 24,
+        "w": 8,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "bytes",
+          "min": 0
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "llm_claude_ram_working_set_bytes and on(instance,job) (time() - llm_hardware_sample_timestamp_seconds < 45)",
+          "legendFormat": "Working set dos processos",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prom-local"
+          }
+        }
+      ]
+    }
+  ]
+}

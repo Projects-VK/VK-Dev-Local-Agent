@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+instalacao.json
+grafana-admin-password
+grafana-habilitado
+roteador.key
+roteador.lock
+hardware/
+dados/
+*.gguf
+*.exe

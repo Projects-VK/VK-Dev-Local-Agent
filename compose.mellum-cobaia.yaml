@@ -1,0 +1,24 @@
+services:
+  llama-server:
+    command:
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8080"
+      - --model
+      - /models/Mellum2.1-12B-A2.5B-Thinking-Q4_K_M-cobaia.gguf
+      - --alias
+      - mellum2.1-12b-a2.5b-cobaia
+      - --ctx-size
+      - "${LLM_CTX_SIZE:-32768}"
+      - --cache-type-k
+      - q8_0
+      - --cache-type-v
+      - q8_0
+      - --parallel
+      - "1"
+      - --fit
+      - "on"
+      - --fit-target
+      - "768"
+      - --jinja
