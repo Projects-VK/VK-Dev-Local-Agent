@@ -20,3 +20,17 @@ Os pesos de modelos, credenciais, volumes e históricos permanecem fora do repos
 - observabilidade contém os serviços e o painel de métricas.
 
 O instalador reúne os arquivos necessários na pasta escolhida para uso local.
+
+## Monitoramento padrão
+
+Ao selecionar Grafana na instalação, o painel **Inferência local** apresenta:
+
+- Tokens de entrada e de geração por segundo, além dos totais acumulados.
+- Requisições em processamento e em espera, maior contexto observado e disponibilidade da coleta.
+- RAM do contêiner, incluindo memória anônima e cache de arquivos.
+- RAM total e disponível da VM WSL.
+- VRAM total, ocupada e livre da GPU.
+- Swap em uso pela VM WSL e pelo contêiner.
+- Soma da memória residente dos processos Claude Code.
+
+O painel abre com seis horas de histórico e atualização a cada 15 segundos. A coleta de hardware começa após a ativação do coletor no Windows. A VRAM representa a GPU inteira, e a RAM do contêiner inclui cache de arquivos. [Abrir o Grafana local](http://127.0.0.1:3000/d/llm-inferencia/inferencia-local)
