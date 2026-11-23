@@ -2,6 +2,19 @@
 
 Agente de desenvolvimento local para Windows, com Claude Code, inferência por llama.cpp e observabilidade opcional pelo Prometheus e Grafana.
 
+## Tecnologias
+
+![Claude Code](https://img.shields.io/badge/Claude%20Code-agente-D97757?logo=claude&logoColor=white)
+![llama.cpp](https://img.shields.io/badge/llama.cpp-infer%C3%AAncia%20local-4A5568)
+![Mellum](https://img.shields.io/badge/Mellum-12B%20MoE-7B61FF)
+![Apex](https://img.shields.io/badge/Apex-35B%20MoE-6741D9)
+![Python](https://img.shields.io/badge/Python-agente%20e%20instalador-3776AB?logo=python&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)
+![WSL 2](https://img.shields.io/badge/Windows-WSL%202-0078D4)
+![NVIDIA CUDA](https://img.shields.io/badge/NVIDIA-CUDA-76B900?logo=nvidia&logoColor=white)
+![Prometheus](https://img.shields.io/badge/Prometheus-m%C3%A9tricas-E6522C?logo=prometheus&logoColor=white)
+![Grafana](https://img.shields.io/badge/Grafana-pain%C3%A9is-F46800?logo=grafana&logoColor=white)
+
 ## Instalação
 
 Instale Python com pip, Docker Desktop com Compose, WSL 2, suporte NVIDIA CUDA e Claude Code. Execute python -B instalar-agente.py, selecione a pasta, os modelos e as opções de observabilidade. O instalador verifica Docker e Compose. A GPU e o WSL precisam ser verificados na máquina de destino.
