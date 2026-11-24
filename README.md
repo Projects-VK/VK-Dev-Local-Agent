@@ -1,5 +1,7 @@
 # VK Dev Local Agent
 
+> **Prova de conceito (PoC):** este projeto é experimental e está em desenvolvimento. Os agentes configurados pelo instalador automático têm autonomia limitada: podem precisar de instruções detalhadas, acompanhamento e intervenção manual para planejar, executar, corrigir e validar tarefas. Seus resultados podem ser inconsistentes e devem ser revisados e testados pelo usuário; a instalação não garante execução autônoma confiável nem desempenho equivalente ao de serviços pagos.
+
 Agente de desenvolvimento local para Windows, com Claude Code, inferência por llama.cpp e observabilidade opcional pelo Prometheus e Grafana.
 
 ## Tecnologias
