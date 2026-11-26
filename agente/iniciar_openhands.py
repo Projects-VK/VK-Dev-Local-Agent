@@ -17,6 +17,15 @@ URL = 'http://127.0.0.1:18081/canvas'
 API_URL = 'http://llama-server:8080/v1'
 
 
+def installed_profiles():
+    config = PASTA / 'instalacao.json'
+    if not config.exists():
+        # Instalações anteriores usam os perfis e o volume Docker originais.
+        return list(MODELOS)
+    value = json.loads(config.read_text(encoding='utf-8'))
+    return value.get('perfis', [])
+
+
 def docker(*args, check=True):
     return subprocess.run(['docker', *args], capture_output=True, text=True, check=check)
 
@@ -25,8 +34,7 @@ def start(project, profile):
     project = project.resolve(strict=True)
     if not project.is_dir() or profile not in MODELOS:
         raise ValueError('Projeto ou perfil inválido.')
-    config = json.loads((PASTA / 'instalacao.json').read_text(encoding='utf-8'))
-    if profile not in config.get('perfis', []):
+    if profile not in installed_profiles():
         raise ValueError('O perfil não foi selecionado nesta instalação.')
     garantir_docker()
     ident = hashlib.sha256(str(PASTA.resolve()).lower().encode('utf-8')).hexdigest()[:12]
@@ -75,8 +83,7 @@ def abrir_executavel(projeto_padrao):
     root.title('Agente Local - OpenHands')
     frame = ttk.Frame(root, padding=16)
     frame.grid()
-    config = json.loads((PASTA / 'instalacao.json').read_text(encoding='utf-8'))
-    profiles = [p for p in ('cobaia', 'base', 'apex') if p in config.get('perfis', [])]
+    profiles = [p for p in ('cobaia', 'base', 'apex') if p in installed_profiles()]
     if not profiles:
         messagebox.showerror('OpenHands', 'Nenhum modelo configurado.', parent=root)
         root.destroy()
