@@ -15,6 +15,7 @@ FILES = (
     "metodo-de-trabalho.md", "revisao-independente.md", "compose.mellum-base.yaml",
     "compose.mellum-cobaia.yaml", "compose.apex.yaml", "compose.modelos-local.yaml",
     "abrir_grafana.py",
+    "desinstalar-agente.py",
 )
 OBSERVABILITY = ("instalar-observabilidade.py", "compose.prometheus.yaml", "prometheus.yml",
                  "exportar_hardware.py", "painel_desempenho.py")
@@ -121,6 +122,12 @@ def install(destination, data, models, prometheus=False, grafana=False):
             raise RuntimeError("O gerador não produziu AgenteLocal.exe.")
         if grafana and not (staged / "AgenteLocalGrafana.exe").is_file():
             raise RuntimeError("O gerador não produziu AgenteLocalGrafana.exe.")
+        (staged / 'Desinstalar Agente.cmd').write_text(
+            '@echo off\r\n"' + sys.executable + '" -B "%~dp0desinstalar-agente.py"\r\n', encoding='utf-8')
+        import hashlib
+        manifest = {str(p.relative_to(staged)): hashlib.sha256(p.read_bytes()).hexdigest()
+                    for p in staged.rglob('*') if p.is_file()}
+        (staged / 'arquivos-instalados.json').write_text(json.dumps(manifest, indent=2) + '\n', encoding='utf-8')
         models = data / "modelos"
         if models.is_relative_to(destination):
             (staged / models.relative_to(destination)).mkdir(parents=True, exist_ok=True)

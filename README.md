@@ -36,6 +36,12 @@ Os pesos de modelos, credenciais, volumes e históricos permanecem fora do repos
 
 O instalador reúne os arquivos necessários na pasta escolhida para uso local.
 
+## Desinstalação
+
+Em instalações novas, execute `Desinstalar Agente.cmd` na pasta do agente. A interface pede confirmação e permite optar pela exclusão dos arquivos dos modelos selecionados na instalação e pela remoção dos contêineres associados àquela pasta. Os arquivos instalados que foram alterados e quaisquer arquivos não reconhecidos são preservados. Instalações anteriores, sem manifesto, exigem remoção manual.
+
+As opções de modelos e contêineres ficam desmarcadas por padrão. A remoção dos contêineres exige Docker acessível e confere a pasta registrada nos rótulos do Compose; recursos compartilhados ou de outra pasta são preservados. Volumes e imagens Docker, dados de monitoramento, rede, tarefa agendada do coletor de hardware e dependências como Docker, WSL, Python e Claude Code não são removidos pelo desinstalador.
+
 ## Monitoramento padrão
 
 Ao selecionar Grafana na instalação, o painel **Inferência local** apresenta:
