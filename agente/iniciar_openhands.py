@@ -30,6 +30,32 @@ def docker(*args, check=True):
     return subprocess.run(['docker', *args], capture_output=True, text=True, check=check)
 
 
+def iniciar_monitoramento():
+    """Inicia apenas os serviços de observabilidade já configurados."""
+    grafana = (PASTA / 'grafana-habilitado').is_file()
+    compose = PASTA / 'compose.prometheus.yaml'
+    if not grafana and not compose.is_file():
+        return
+    wanted = {'prometheus', 'hardware-exporter'}
+    if grafana:
+        wanted.add('grafana')
+    result = docker('ps', '-a', '--filter', 'label=com.docker.compose.project=llm-observabilidade',
+                    '--format', '{{.ID}}\t{{.Label "com.docker.compose.service"}}\t{{.State}}')
+    found = set()
+    for line in result.stdout.splitlines():
+        fields = line.split('\t')
+        if len(fields) != 3 or fields[1] not in wanted:
+            continue
+        found.add(fields[1])
+        if fields[2] != 'running':
+            docker('start', fields[0])
+    missing = wanted - found
+    if missing:
+        if not compose.is_file():
+            raise RuntimeError('Serviços de monitoramento ausentes: ' + ', '.join(sorted(missing)))
+        docker('compose', '-f', str(compose), 'up', '-d', *sorted(missing))
+
+
 def start(project, profile):
     project = project.resolve(strict=True)
     if not project.is_dir() or profile not in MODELOS:
@@ -103,12 +129,21 @@ def abrir_executavel(projeto_padrao):
         except (OSError, ValueError, RuntimeError, subprocess.SubprocessError) as exc:
             messagebox.showerror('Falha ao iniciar OpenHands', str(exc), parent=root)
             return
+        try:
+            iniciar_monitoramento()
+        except (OSError, RuntimeError, subprocess.SubprocessError) as exc:
+            messagebox.showwarning('Monitoramento indisponível',
+                                   'OpenHands iniciou, mas não foi possível iniciar o monitoramento: ' + str(exc),
+                                   parent=root)
         messagebox.showinfo('Configuração do modelo',
-                            'Em Settings > LLM > Advanced, configure:\n\n'
-                            f'Modelo: openai/{alias}\nBase URL: {API_URL}\n'
-                            'API key: local\n\nSelecione /projects como workspace. '
+                            'Em Settings > LLM > Advanced, digite apenas os valores abaixo, sem os nomes dos campos:\n\n'
+                            f'Modelo:\nopenai/{alias}\n\nBase URL:\n{API_URL}\n\n'
+                            'API key:\nlocal\n\nSelecione /projects como workspace. '
                             'Ao trocar de perfil, configure uma nova conversa.', parent=root)
         webbrowser.open_new_tab(URL)
+        if (PASTA / 'grafana-habilitado').is_file():
+            from abrir_grafana import abrir
+            abrir()
         root.destroy()
 
     ttk.Button(frame, text='Escolher projeto e iniciar', command=launch).grid(pady=8)
