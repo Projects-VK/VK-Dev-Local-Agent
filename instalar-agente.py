@@ -15,7 +15,7 @@ FILES = (
     "metodo-de-trabalho.md", "revisao-independente.md", "compose.mellum-base.yaml",
     "compose.mellum-cobaia.yaml", "compose.apex.yaml", "compose.modelos-local.yaml",
     "abrir_grafana.py",
-    "desinstalar-agente.py", "iniciar_openhands.py",
+    "desinstalar-agente.py", "iniciar_openhands.py", "configurar_openhands.py",
 )
 OBSERVABILITY = ("instalar-observabilidade.py", "compose.prometheus.yaml", "prometheus.yml",
                  "exportar_hardware.py", "painel_desempenho.py")

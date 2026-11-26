@@ -100,6 +100,12 @@ def start(project, profile):
         time.sleep(1)
     else:
         raise RuntimeError('OpenHands não ficou disponível em 90 segundos. Verifique os logs do contêiner.')
+    script = (PASTA / 'configurar_openhands.py').read_bytes()
+    result = subprocess.run(['docker', 'exec', '-i', name, 'python', '-', profile, MODELOS[profile]],
+                            input=script, capture_output=True, timeout=45)
+    if result.returncode:
+        raise RuntimeError('Falha ao configurar o perfil de trabalho OpenHands: ' +
+                           result.stderr.decode('utf-8', errors='replace')[-1000:])
     return MODELOS[profile]
 
 
@@ -135,11 +141,10 @@ def abrir_executavel(projeto_padrao):
             messagebox.showwarning('Monitoramento indisponível',
                                    'OpenHands iniciou, mas não foi possível iniciar o monitoramento: ' + str(exc),
                                    parent=root)
-        messagebox.showinfo('Configuração do modelo',
-                            'Em Settings > LLM > Advanced, digite apenas os valores abaixo, sem os nomes dos campos:\n\n'
-                            f'Modelo:\nopenai/{alias}\n\nBase URL:\n{API_URL}\n\n'
-                            'API key:\nlocal\n\nSelecione /projects como workspace. '
-                            'Ao trocar de perfil, configure uma nova conversa.', parent=root)
+        messagebox.showinfo('OpenHands configurado',
+                            f'Modelo: {alias}\nPerfil de trabalho: vk-local-{selected.get()}\n\n'
+                            'Selecione /projects como workspace e inicie uma nova conversa. '
+                            'As instruções orientam o agente, mas não garantem o resultado.', parent=root)
         webbrowser.open_new_tab(URL)
         if (PASTA / 'grafana-habilitado').is_file():
             from abrir_grafana import abrir
