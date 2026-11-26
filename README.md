@@ -36,6 +36,14 @@ Os pesos de modelos, credenciais, volumes e históricos permanecem fora do repos
 
 O instalador reúne os arquivos necessários na pasta escolhida para uso local.
 
+## OpenHands experimental
+
+Novas instalações incluem `OpenHands.exe`, que permite escolher o modelo e a pasta de projeto, inicia o servidor local e abre o Agent Canvas 1.46.0 em um contêiner. A imagem oficial é baixada na primeira execução. A pasta escolhida é montada em `/projects` com permissão de escrita; o contêiner não recebe acesso ao socket Docker ou modo privilegiado. A interface é publicada somente no computador local, na porta 18081.
+
+Na primeira execução, configure em **Settings > LLM > Advanced** o modelo `openai/<id>` mostrado pelo lançador, a base `http://llama-server:8080/v1` e a chave de modelo `local`. Abra `/projects` como workspace. A configuração é armazenada no volume do OpenHands. Esta opção é experimental: as instruções do Claude Code, seu MCP e a troca automática de modelo não são migrados automaticamente. Para mudar de perfil, reinicie o lançador e abra uma nova conversa com o perfil LLM correspondente. Não troque de modelo enquanto houver uma tarefa ativa.
+
+O desinstalador existente ainda não remove o contêiner e o volume específicos do OpenHands: remova-os apenas após verificar se os dados de conversas podem ser descartados. O coletor de hardware exporta `llm_openhands_container_ram_bytes` quando o contêiner está em execução; a configuração do painel Grafana pode ser ajustada para apresentar essa série.
+
 ## Desinstalação
 
 Em instalações novas, execute `Desinstalar Agente.cmd` na pasta do agente. A interface pede confirmação e permite optar pela exclusão dos arquivos dos modelos selecionados na instalação e pela remoção dos contêineres associados àquela pasta. Os arquivos instalados que foram alterados e quaisquer arquivos não reconhecidos são preservados. Instalações anteriores, sem manifesto, exigem remoção manual.

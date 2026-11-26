@@ -29,7 +29,8 @@ def main():
         "from %(module)s import %(import_name)s\n"
         f"raise SystemExit(%(func)s({ascii(str(projeto)).replace('%', '%%')}))\n"
     )
-    entradas = ["AgenteLocal = iniciar_mellum:abrir_executavel"]
+    entradas = ["AgenteLocal = iniciar_mellum:abrir_executavel",
+                "OpenHands = iniciar_openhands:abrir_executavel"]
     if args.grafana:
         entradas.append("AgenteLocalGrafana = iniciar_mellum:abrir_executavel_grafana")
     for caminho in maker.make_multiple(entradas):

@@ -15,7 +15,7 @@ FILES = (
     "metodo-de-trabalho.md", "revisao-independente.md", "compose.mellum-base.yaml",
     "compose.mellum-cobaia.yaml", "compose.apex.yaml", "compose.modelos-local.yaml",
     "abrir_grafana.py",
-    "desinstalar-agente.py",
+    "desinstalar-agente.py", "iniciar_openhands.py",
 )
 OBSERVABILITY = ("instalar-observabilidade.py", "compose.prometheus.yaml", "prometheus.yml",
                  "exportar_hardware.py", "painel_desempenho.py")
@@ -104,6 +104,11 @@ def install(destination, data, models, prometheus=False, grafana=False):
             if source is None:
                 raise FileNotFoundError(name)
             shutil.copy2(source, staged / name)
+        # O download fornece um único arquivo Mellum; os perfis mantêm aliases distintos.
+        cobaia = staged / 'compose.mellum-cobaia.yaml'
+        cobaia.write_text(cobaia.read_text(encoding='utf-8').replace(
+            'Mellum2.1-12B-A2.5B-Thinking-Q4_K_M-cobaia.gguf',
+            'Mellum2.1-12B-A2.5B-Thinking-Q4_K_M.gguf'), encoding='utf-8')
         if prometheus:
             for name in OBSERVABILITY:
                 group = "instalacao" if name == "instalar-observabilidade.py" else "observabilidade"
@@ -120,6 +125,8 @@ def install(destination, data, models, prometheus=False, grafana=False):
         subprocess.run(command, check=True)
         if not (staged / "AgenteLocal.exe").is_file():
             raise RuntimeError("O gerador não produziu AgenteLocal.exe.")
+        if not (staged / "OpenHands.exe").is_file():
+            raise RuntimeError("O gerador não produziu OpenHands.exe.")
         if grafana and not (staged / "AgenteLocalGrafana.exe").is_file():
             raise RuntimeError("O gerador não produziu AgenteLocalGrafana.exe.")
         (staged / 'Desinstalar Agente.cmd').write_text(

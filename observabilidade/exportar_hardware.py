@@ -28,6 +28,20 @@ def coletar():
                "Measure-Object -Property WorkingSet64 -Sum).Sum"])
     if ram.isdigit():
         series["llm_claude_ram_working_set_bytes"] = int(ram)
+    # OpenHands é opcional; a ausência do contêiner não afeta as demais séries.
+    openhands = ler(["docker", "ps", "--filter", "name=vk-openhands-", "--format", "{{.Names}}"])
+    if openhands:
+        total_openhands = 0
+        found = False
+        for name in openhands.splitlines():
+            if not name.startswith("vk-openhands-"):
+                continue
+            value = ler(["docker", "exec", name, "cat", "/sys/fs/cgroup/memory.current"])
+            if value.isdigit():
+                total_openhands += int(value)
+                found = True
+        if found:
+            series["llm_openhands_container_ram_bytes"] = total_openhands
     return series
 
 
